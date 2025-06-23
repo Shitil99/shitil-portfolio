@@ -162,7 +162,7 @@ export function Portfolio() {
             value={terminalInput}
             onChange={(e) => setTerminalInput(e.target.value)}
             className="w-full bg-black text-green-400 border border-green-400 px-2 py-1 text-sm"
-            placeholder="Type a command…"
+            placeholder="Press Enter for a help menu"
           />
         </form>
       </div>
