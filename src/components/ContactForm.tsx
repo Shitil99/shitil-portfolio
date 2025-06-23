@@ -1,6 +1,6 @@
+// src/components/ContactForm.tsx
+
 import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -9,10 +9,9 @@ export function ContactForm() {
     subject: "",
     message: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
-
-  const submitMessage = useMutation(api.portfolio.submitContactMessage);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -27,18 +26,28 @@ export function ContactForm() {
     setIsSubmitting(true);
     setSubmitStatus("idle");
 
+    const payload = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      payload.append(key, value);
+    });
+
     try {
-      await submitMessage(formData);
-      setSubmitStatus("success");
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
+      const res = await fetch("https://formspree.io/f/mvgrwwnk", {
+        method: "POST",
+        body: payload,
+        headers: {
+          Accept: "application/json"
+        }
       });
-    } catch (error) {
+
+      if (res.ok) {
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (err) {
       setSubmitStatus("error");
-      console.error("Failed to submit message:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -50,7 +59,7 @@ export function ContactForm() {
         <span className="mr-2">📡</span>
         SECURE COMMUNICATION CHANNEL
       </h2>
-      
+
       <div className="bg-black border border-cyan-500/20 rounded-lg p-4 mb-6">
         <div className="text-cyan-400 text-sm mb-2">
           ┌─ CONTACT PROTOCOL INITIATED ─┐

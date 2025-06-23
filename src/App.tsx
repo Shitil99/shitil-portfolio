@@ -1,5 +1,3 @@
-import { useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
 import { Toaster } from "sonner";
 import { Portfolio } from "./Portfolio";
 import { Navigation } from "./components/Navigation";
@@ -46,12 +44,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">
       <Navigation activeSection={activeSection} />
-      
 
-      
       <main className="pt-20 p-4">
         <Content />
       </main>
+
       <Toaster />
     </div>
   );
@@ -70,7 +67,7 @@ function Content() {
         <div className="text-green-400 text-2xl mb-4">
           ╚══════════════════════════════════════════════════════════════╝
         </div>
-        
+
         <div className="text-yellow-400 mb-2">
           [INFO] Public portfolio access • Security professional profile
         </div>
